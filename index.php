@@ -163,7 +163,7 @@ if (isset($dbError)) {
             <div class="info-panel left-info">
                 <div class="panel-content">
                     <h3>Don't have an account?</h3>
-                    <p>Create your account now to follow people and like publications</p>
+                    <p>Create your account now to browse the marketplace</p>
                     <button class="transparent-btn" onclick="switchToRegister()">Sign Up</button>
                 </div>
                 
@@ -172,7 +172,7 @@ if (isset($dbError)) {
             <div class="info-panel right-info">
                 <div class="panel-content">
                     <h3>Already have an account?</h3>
-                    <p>Sign in to see your notifications and post your favorite photos</p>
+                    <p>Sign in to see your notifications and add your products</p>
                     <button class="transparent-btn" onclick="switchToLogin()">Sign In</button>
                 </div>
             </div>

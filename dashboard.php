@@ -40,6 +40,28 @@ $userProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <link rel="stylesheet" href="assets/css/dash.css">
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body class="dashboard-page">
 <div class="theme-toggle">
@@ -95,8 +117,8 @@ $userProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <img src="<?php echo $imgUrl; ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" class="w-full h-48 object-cover rounded">
                         <div class="product-info mt-4">
                             <h4 class="text-lg font-medium"><?php echo htmlspecialchars($product['title']); ?></h4>
-                            <p class="price text-primary font-bold">$<?php echo htmlspecialchars($product['price']); ?></p>
-                            <button class="action-button bg-primary text-white px-4 py-2 rounded hover:bg-accent transition-colors" onclick="viewProductDetails(<?php echo (int)$product['id']; ?>, <?php echo json_encode($product['title']); ?>, <?php echo json_encode($product['price']); ?>, <?php echo json_encode($imgUrl); ?>, <?php echo json_encode($product['description'] ?? ''); ?>)">View</button>
+                            <p class="price text-primary font-bold">₱<?php echo htmlspecialchars($product['price']); ?></p>
+                            <a href="javascript:void(0);" class="action-button bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors" onclick="if(confirm('Remove this product?')) { deleteProduct(<?php echo (int)$product['id']; ?>); }">Remove</a>
                         </div>
                     </div>
                     <?php endforeach; ?>
@@ -218,6 +240,70 @@ function buyProduct(productId, productTitle) {
         console.error('Error:', error);
         alert('Error placing order. Please try again.');
     });
+}
+
+function deleteProduct(productId) {
+    console.log('Deleting product:', productId);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'delete_product.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.onload = function() {
+        console.log('Response:', xhr.responseText);
+        try {
+            const data = JSON.parse(xhr.responseText);
+            if (data.success) {
+                showNotification('✓ Product removed successfully', 'success');
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                showNotification('Error: ' + (data.message || 'Could not remove product'), 'error');
+            }
+        } catch (e) {
+            console.error('Parse error:', e);
+            showNotification('Server error. Please try again.', 'error');
+        }
+    };
+    
+    xhr.onerror = function() {
+        console.error('Request error');
+        showNotification('Network error. Please try again.', 'error');
+    };
+    
+    xhr.send('product_id=' + productId);
+}
+
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 2000;
+        animation: slideIn 0.4s ease-out;
+        backdrop-filter: blur(8px);
+    `;
+    
+    if (type === 'success') {
+        notification.style.background = 'rgba(76, 205, 196, 0.95)';
+        notification.style.color = '#052';
+        notification.style.border = '1px solid #4ecdc4';
+    } else {
+        notification.style.background = 'rgba(244, 67, 54, 0.95)';
+        notification.style.color = '#fff';
+        notification.style.border = '1px solid #f44336';
+    }
+    
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.4s ease-out';
+        setTimeout(() => notification.remove(), 400);
+    }, 3000);
 }
 
 </script>

@@ -66,7 +66,6 @@ try {
         @media (max-width: 800px) {
             .profile-grid { grid-template-columns:1fr !important; }
         }
-
         .modal-overlay { position:fixed; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex;align-items:flex-end; justify-content:center; z-index:1200; }
         .modal-card { width:100%; max-width:520px; background:rgba(20,24,31,0.98); border-radius:12px 12px 0 0; padding:18px; margin-bottom:40px; box-shadow:0 12px 40px rgba(0,0,0,0.6); }
         @media (min-width:801px) { .modal-overlay { align-items:center; } .modal-card { border-radius:12px; margin-bottom:0; } }
@@ -244,4 +243,3 @@ function closeProfileEdit() {
 
 </body>
 </html>
-

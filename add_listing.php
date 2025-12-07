@@ -54,8 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $result = $stmt->execute([$userId, $title, $description, $price, $image_url]);
                 
                 if ($result) {
-                    header('Location: dashboard.php');
-                    exit;
+                    $message = 'success';
                 } else {
                     $message = 'Could not add listing. Please try again.';
                 }
@@ -93,31 +92,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <main class="main-content">
             <div class="add-listing-container" style="max-width:700px;margin:0 auto;padding:0 18px;">
-                <h2>Add Listing</h2>
-                <?php if ($message): ?>
-                    <div style="margin:12px 0;padding:10px;background:rgba(255,255,255,0.04);border-radius:6px;">
+                <h2>Add Product</h2>
+                <?php if ($message === 'success'): ?>
+                    <div id="successMsg" style="margin:12px 0;padding:14px;background:rgba(76, 205, 196, 0.15);border:1px solid #4ecdc4;border-radius:6px;color:#4ecdc4;font-weight:600;">
+                        ✓ Product added successfully! Redirecting to dashboard...
+                    </div>
+                <?php elseif ($message): ?>
+                    <div style="margin:12px 0;padding:10px;background:rgba(255,255,255,0.04);border-radius:6px;color:#ff6b6b;">
                         <?php echo htmlspecialchars($message); ?>
                     </div>
                 <?php endif; ?>
 
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" id="addListingForm">
     <div style="margin-bottom:8px;">
-        <label>Name</label>
+        <label>Name: </label>
         <input type="text" name="title" class="field-input" required>
     </div>
 
     <div style="margin-bottom:8px;">
-        <label>Description</label>
+        <label>Description: </label>
         <textarea name="description" class="field-input" rows="4"></textarea>
     </div>
 
     <div style="margin-bottom:8px;">
-        <label>Price</label>
+        <label>Price: </label>
         <input type="number" name="price" step="0.01" class="field-input" required>
     </div>
 
     <div style="margin-bottom:8px;">
-        <label>Upload Image</label>
+        <label>Upload Image: </label>
         <input type="file" name="image" accept="image/*" required class="field-input">
     </div>
 
@@ -134,6 +137,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="script.js"></script>
 <script>
     if (typeof AOS !== 'undefined') AOS.init();
+    
+    if (document.getElementById('successMsg')) {
+        setTimeout(() => {
+            window.location.href = 'dashboard.php';
+        }, 2000);
+    }
 </script>
 
 </body>

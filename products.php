@@ -100,7 +100,7 @@ if (count($products) === 0) {
                     <img src="<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($p['title']); ?>">
                     <div class="product-info">
                         <h4><?php echo htmlspecialchars($p['title']); ?></h4>
-                        <p class="price">$<?php echo number_format((float)$p['price'], 2); ?></p>
+                        <p class="price">₱<?php echo number_format((float)$p['price'], 2); ?></p>
                         <p style="color: rgba(255,255,255,0.8); font-size:0.95rem;"><?php echo htmlspecialchars($p['description']); ?></p>
                         <div class="product-actions">
                             <button class="btn-view" onclick="viewProductDetails(<?php echo $p['id']; ?>, '<?php echo htmlspecialchars($p['title']); ?>', <?php echo $p['price']; ?>, '<?php echo htmlspecialchars($img); ?>')">View Details</button>
@@ -140,7 +140,7 @@ if (count($products) === 0) {
                 </div>
                 <img src="${imageUrl}" alt="${title}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;">
                 <h3 style="margin: 0 0 12px 0; font-size: 1.3rem;">${title}</h3>
-                <p style="color: #4ecdc4; font-size: 1.3rem; font-weight: 600; margin-bottom: 20px;">$${parseFloat(price).toFixed(2)}</p>
+                <p style="color: #4ecdc4; font-size: 1.3rem; font-weight: 600; margin-bottom: 20px;">₱${parseFloat(price).toFixed(2)}</p>
                 <button class="btn-buy" onclick="buyProduct(${productId}, '${title}')" style="width: 100%; padding: 12px; font-size: 1rem;">
                     <i class="fas fa-shopping-cart"></i> Buy Now
                 </button>
@@ -162,7 +162,7 @@ if (count($products) === 0) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('✓ Order placed successfully!\\n\\nProduct: ' + data.product_title + '\\nQuantity: ' + data.quantity + '\\nTotal: $' + parseFloat(data.total_price).toFixed(2));
+                alert('✓ Order placed successfully!\n\nProduct: ' + data.product_title + '\nQuantity: ' + data.quantity + '\nTotal: ₱' + parseFloat(data.total_price).toFixed(2));
                 document.getElementById('productDetailModal').style.display = 'none';
                 setTimeout(() => location.reload(), 1000);
             } else {
