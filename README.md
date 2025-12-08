@@ -13,3 +13,5 @@
 2. Copy the SQL code from `sql/db.txt` and paste it into the **SQL Tab**, then run the query to create the database and tables.
 
 3. Sign up and you will be redirected to the dashboard.
+
+## STILL ON DEVELOPMENT
